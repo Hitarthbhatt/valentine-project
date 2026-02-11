@@ -13,10 +13,10 @@
 const VALENTINE_CONFIG = {
 
   // Your name (appears in the letter signature)
-  yourName: "Your Loving Husband",
+  yourName: "Tera Dobu Hitu",
 
   // Her name (appears in the greeting)
-  herName: "Chaka",
+  herName: "Chaka urf Sitara",
 
 
   // ──────────────────────────────────────────────
@@ -26,11 +26,15 @@ const VALENTINE_CONFIG = {
   // Each paragraph is wrapped in quotes and separated by commas.
 
   paragraphs: [
-    "Every day with you feels like a beautiful dream I never want to wake from. Your smile lights up my darkest days, and your love gives me strength I never knew I had.",
+    "Meri pyaari chaka,", 
+    
+    "Ye hamara pehle valentine hai or me puri koshish karunga ki ye tere liye bohot special bane. Pata hai me ab kabhi bhi akela mehsoos nhi karta hu jo me pehle mehsoor karta tha kyuki ab mere pass tu hai meri bestest friend.",
 
-    "I am grateful for every moment we share—the quiet mornings, the laughter-filled evenings, and everything in between. You are my partner, my best friend, and the love of my life.",
+    "Tere bina ab me apni aage ki life imagine bhi nhi kar sakta hu. tere hone se me special ban jata hu. tere sirf itna bolne se ki \"Me sath hu tumhare\" mujme puri duniya jit lene ki himmat aa jati hai.",
 
-    "On this Valentine's Day, I want you to know that my love for you grows stronger with each passing day. You are my forever, my always, my everything."
+    "jane anjane me tuje bohot rula deta hu pr kasam se tuje rota dekh kar mera dil bhi bohot rota hai.",
+
+    "Me bas itna hi kahunga ki jeevan ke har pal me main tere sath rahunga, tuje har vo khushi dunga ko to deserve karti hai or main hamesha tujse beimtehan pyaar karunga."
   ],
 
 
@@ -47,8 +51,7 @@ const VALENTINE_CONFIG = {
 
   images: [
     "photo1.jpg",
-    "photo2.jpg",
-    "photo3.jpg",
+    "photo2.jpg"
   ],
 };
 
