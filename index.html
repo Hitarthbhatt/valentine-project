@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine's Day for Chaka ❤️</title>
+    <meta name="description" content="A special Valentine's Day message">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="root"></div>
+    
+    <!-- React, ReactDOM, and Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Your Config (names, letter text, images, no-button texts) -->
+    <script src="config.js"></script>
+    
+    <!-- Valentine Component -->
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // ─── Heart SVG Icon ───
+        function Heart({ style }) {
+            return (
+                <svg 
+                    style={style}
+                    viewBox="0 0 24 24" 
+                    fill="currentColor" 
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>
+            );
+        }
+
+        // ─── Main Valentine Component ───
+        function ValentineLoveLetter() {
+            const [stage, setStage] = useState('question');
+            const [noButtonPosition, setNoButtonPosition] = useState({ top: '70%', left: '50%' });
+            const [noButtonText, setNoButtonText] = useState('No');
+            const [clickCount, setClickCount] = useState(0);
+
+            // Use config from config.js
+            const letterConfig = VALENTINE_CONFIG;
+            const noButtonTexts = NO_BUTTON_TEXTS;
+
+            useEffect(() => {
+                if (stage === 'letter') {
+                    setTimeout(() => setStage('content'), 800);
+                }
+            }, [stage]);
+
+            // ─── No Button Handler (moves & changes text) ───
+            const handleNoClick = () => {
+                let newTop, newLeft;
+                do {
+                    newTop = Math.random() * 70 + 20;
+                    newLeft = Math.random() * 80 + 10;
+                } while (newTop < 40 && newLeft > 30 && newLeft < 70);
+                
+                setNoButtonPosition({ top: `${newTop}%`, left: `${newLeft}%` });
+                
+                if (clickCount < noButtonTexts.length - 1) {
+                    setClickCount(prev => prev + 1);
+                    setNoButtonText(noButtonTexts[clickCount + 1]);
+                }
+            };
+
+            // ─── Yes Button Handler (opens the letter) ───
+            const handleYes = () => {
+                setStage('letter');
+            };
+
+            // Photo captions that rotate through
+            const photoCaptions = ['Us 💕', 'My favorite 💖', 'Together ✨', 'Love this 🥰', 'Always 💗', 'Forever 💞'];
+
+            // Cherry blossom petals config
+            const petals = ['🌸', '🌸', '✿', '🌸', '❀', '🌸'];
+
+            return (
+                <div style={{
+                    minHeight: '100vh',
+                    background: 'linear-gradient(180deg, #0a0a2e 0%, #1a1040 30%, #2d1b4e 60%, #1a1040 100%)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '20px',
+                    fontFamily: "'Cormorant Garamond', serif",
+                    position: 'relative',
+                    overflow: 'hidden'
+                }}>
+
+                    {/* ═══ TWINKLING STARS — 60 stars across the night sky ═══ */}
+                    <div className="stars-container">
+                        {[...Array(60)].map((_, i) => {
+                            const colorClasses = ['star--white', 'star--white', 'star--blue', 'star--gold', 'star--pink'];
+                            const isBright = i < 5;
+                            const size = isBright ? (4 + Math.random() * 3) : (1.5 + Math.random() * 3);
+                            return (
+                                <div
+                                    key={`star-${i}`}
+                                    className={`star ${isBright ? 'star--bright' : colorClasses[i % colorClasses.length]}`}
+                                    style={{
+                                        left: `${Math.random() * 100}%`,
+                                        top: `${Math.random() * 100}%`,
+                                        width: `${size}px`,
+                                        height: `${size}px`,
+                                        '--duration': `${2 + Math.random() * 5}s`,
+                                        '--delay': `${Math.random() * 6}s`
+                                    }}
+                                />
+                            );
+                        })}
+
+                        {/* Shooting star */}
+                        <div className="shooting-star" style={{ top: '15%', right: '10%', animationDelay: '2s' }} />
+                        <div className="shooting-star" style={{ top: '30%', right: '30%', animationDelay: '8s' }} />
+                    </div>
+
+                    {/* ═══ FALLING CHERRY BLOSSOM PETALS ═══ */}
+                    <div className="petals-container">
+                        {[...Array(25)].map((_, i) => (
+                            <div
+                                key={`petal-${i}`}
+                                className="petal"
+                                style={{
+                                    left: `${Math.random() * 100}%`,
+                                    '--size': `${14 + Math.random() * 14}px`,
+                                    '--opacity': `${0.3 + Math.random() * 0.5}`,
+                                    '--fall-duration': `${10 + Math.random() * 15}s`,
+                                    '--sway-duration': `${3 + Math.random() * 4}s`,
+                                    '--delay': `${Math.random() * 15}s`
+                                }}
+                            >
+                                {petals[i % petals.length]}
+                            </div>
+                        ))}
+                    </div>
+
+                    {/* ═══ FLOATING HEARTS (subtle, blends with night sky) ═══ */}
+                    <div style={{
+                        position: 'absolute',
+                        inset: 0,
+                        pointerEvents: 'none',
+                        opacity: 0.08
+                    }}>
+                        {[...Array(12)].map((_, i) => (
+                            <Heart
+                                key={i}
+                                style={{
+                                    position: 'absolute',
+                                    left: `${Math.random() * 100}%`,
+                                    top: `${Math.random() * 100}%`,
+                                    width: `${15 + Math.random() * 30}px`,
+                                    height: `${15 + Math.random() * 30}px`,
+                                    fill: '#ffb7c5',
+                                    stroke: 'none',
+                                    animation: `float ${5 + Math.random() * 10}s ease-in-out infinite`,
+                                    animationDelay: `${Math.random() * 5}s`
+                                }}
+                            />
+                        ))}
+                    </div>
+
+                    {/* ═══ DECORATIVE CHERRY BLOSSOM BRANCHES ═══ */}
+                    <div className="branch-decoration branch-top-right">🌸🌸🌿</div>
+                    <div className="branch-decoration branch-bottom-left">🌿🌸🌸</div>
+
+
+                    {/* ═══════════════════════════════════════
+                         STAGE 1: THE QUESTION
+                         ═══════════════════════════════════════ */}
+                    {stage === 'question' ? (
+                        <div style={{
+                            textAlign: 'center',
+                            animation: 'fadeIn 1s ease-out',
+                            position: 'relative',
+                            width: '100%',
+                            maxWidth: '600px',
+                            zIndex: 10
+                        }}>
+                            <Heart style={{
+                                width: '80px',
+                                height: '80px',
+                                fill: '#ffb7c5',
+                                stroke: 'none',
+                                marginBottom: '40px',
+                                animation: 'heartbeat 1.5s ease-in-out infinite',
+                                filter: 'drop-shadow(0 0 15px rgba(255, 183, 197, 0.6))'
+                            }} />
+                            
+                            <h1 style={{
+                                fontSize: 'clamp(2rem, 6vw, 4rem)',
+                                fontWeight: 600,
+                                color: '#ffe4ec',
+                                marginBottom: '30px',
+                                letterSpacing: '1px',
+                                fontStyle: 'italic',
+                                lineHeight: '1.3',
+                                textShadow: '0 0 30px rgba(255, 183, 197, 0.4), 0 2px 4px rgba(0,0,0,0.3)'
+                            }}>
+                                My Dear {letterConfig.herName}<br />Will You Be My Valentine?
+                            </h1>
+                            
+                            <p style={{
+                                fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)',
+                                color: '#c9b8d8',
+                                marginBottom: '60px',
+                                fontWeight: 300,
+                                lineHeight: '1.6'
+                            }}>
+                                I have something special to share with you... 🌸
+                            </p>
+                            
+                            {/* Buttons container */}
+                            <div style={{
+                                position: 'relative',
+                                minHeight: '250px',
+                                width: '100%',
+                                maxWidth: '500px',
+                                margin: '0 auto'
+                            }}>
+                                {/* YES Button — Cherry Blossom Pink */}
+                                <div style={{
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    position: 'relative',
+                                    zIndex: 5
+                                }}>
+                                    <button
+                                        onClick={handleYes}
+                                        style={{
+                                            padding: '18px 50px',
+                                            fontSize: 'clamp(1.2rem, 3vw, 1.4rem)',
+                                            background: 'linear-gradient(135deg, #ff7eb3 0%, #ffb7c5 50%, #ffc3d4 100%)',
+                                            color: '#2d1b4e',
+                                            border: 'none',
+                                            borderRadius: '50px',
+                                            cursor: 'pointer',
+                                            fontFamily: "'Cormorant Garamond', serif",
+                                            fontWeight: 600,
+                                            letterSpacing: '1px',
+                                            boxShadow: '0 10px 30px rgba(255, 126, 179, 0.4), 0 0 60px rgba(255, 183, 197, 0.2)',
+                                            transition: 'all 0.3s ease',
+                                            minWidth: '200px',
+                                            animation: 'glowPulse 3s ease-in-out infinite'
+                                        }}
+                                        onMouseEnter={(e) => {
+                                            e.target.style.transform = 'translateY(-3px) scale(1.05)';
+                                            e.target.style.boxShadow = '0 15px 40px rgba(255, 126, 179, 0.6), 0 0 80px rgba(255, 183, 197, 0.3)';
+                                        }}
+                                        onMouseLeave={(e) => {
+                                            e.target.style.transform = 'translateY(0) scale(1)';
+                                            e.target.style.boxShadow = '0 10px 30px rgba(255, 126, 179, 0.4), 0 0 60px rgba(255, 183, 197, 0.2)';
+                                        }}
+                                    >
+                                        Yes! 🌸
+                                    </button>
+                                </div>
+                                
+                                {/* NO Button (runs away!) — Deep Purple Night */}
+                                <button
+                                    onClick={handleNoClick}
+                                    style={{
+                                        padding: '18px 50px',
+                                        fontSize: 'clamp(1.2rem, 3vw, 1.4rem)',
+                                        background: 'linear-gradient(135deg, #2d1b4e 0%, #4a2d6e 100%)',
+                                        color: '#c9b8d8',
+                                        border: '2px solid rgba(255, 183, 197, 0.3)',
+                                        borderRadius: '50px',
+                                        cursor: 'pointer',
+                                        fontFamily: "'Cormorant Garamond', serif",
+                                        fontWeight: 600,
+                                        letterSpacing: '1px',
+                                        boxShadow: '0 8px 25px rgba(45, 27, 78, 0.5)',
+                                        transition: 'all 0.2s ease',
+                                        position: 'absolute',
+                                        top: noButtonPosition.top,
+                                        left: noButtonPosition.left,
+                                        transform: 'translate(-50%, -50%)',
+                                        minWidth: '200px',
+                                        whiteSpace: 'nowrap',
+                                        zIndex: 15,
+                                        touchAction: 'manipulation',
+                                        backdropFilter: 'blur(10px)'
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.transform = 'translate(-50%, -50%) scale(1.05)';
+                                        e.target.style.boxShadow = '0 12px 35px rgba(45, 27, 78, 0.6)';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.transform = 'translate(-50%, -50%) scale(1)';
+                                        e.target.style.boxShadow = '0 8px 25px rgba(45, 27, 78, 0.5)';
+                                    }}
+                                >
+                                    {noButtonText}
+                                </button>
+                            </div>
+                        </div>
+
+
+                    /* ═══════════════════════════════════════
+                         STAGE 2: THE LOVE LETTER
+                         ═══════════════════════════════════════ */
+                    ) : stage === 'letter' || stage === 'content' ? (
+                        <div style={{
+                            maxWidth: '900px',
+                            width: '100%',
+                            background: 'linear-gradient(135deg, rgba(20, 10, 40, 0.92) 0%, rgba(45, 27, 78, 0.92) 50%, rgba(30, 15, 50, 0.92) 100%)',
+                            backdropFilter: 'blur(20px)',
+                            borderRadius: '20px',
+                            padding: 'clamp(30px, 6vw, 80px)',
+                            boxShadow: '0 30px 90px rgba(0, 0, 0, 0.4), 0 0 60px rgba(255, 183, 197, 0.08), inset 0 1px 0 rgba(255, 183, 197, 0.1)',
+                            animation: 'slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1)',
+                            position: 'relative',
+                            border: '1px solid rgba(255, 183, 197, 0.15)',
+                            margin: '20px',
+                            zIndex: 10
+                        }}>
+                            {/* Decorative corner — top right (blossom themed) */}
+                            <div style={{
+                                position: 'absolute',
+                                top: '15px',
+                                right: '15px',
+                                width: 'clamp(40px, 8vw, 60px)',
+                                height: 'clamp(40px, 8vw, 60px)',
+                                borderTop: '2px solid rgba(255, 183, 197, 0.4)',
+                                borderRight: '2px solid rgba(255, 183, 197, 0.4)',
+                                opacity: 0.6
+                            }} />
+                            {/* Decorative corner — bottom left */}
+                            <div style={{
+                                position: 'absolute',
+                                bottom: '15px',
+                                left: '15px',
+                                width: 'clamp(40px, 8vw, 60px)',
+                                height: 'clamp(40px, 8vw, 60px)',
+                                borderBottom: '2px solid rgba(255, 183, 197, 0.4)',
+                                borderLeft: '2px solid rgba(255, 183, 197, 0.4)',
+                                opacity: 0.6
+                            }} />
+
+                            {/* Blossom accents on the card */}
+                            <div style={{
+                                position: 'absolute', top: '10px', right: '10px',
+                                fontSize: '1.5rem', opacity: 0.3, pointerEvents: 'none'
+                            }}>🌸</div>
+                            <div style={{
+                                position: 'absolute', bottom: '10px', left: '10px',
+                                fontSize: '1.5rem', opacity: 0.3, pointerEvents: 'none'
+                            }}>🌸</div>
+
+                            <div style={{
+                                opacity: stage === 'content' ? 1 : 0,
+                                transition: 'opacity 0.8s ease-out 0.3s'
+                            }}>
+                                {/* ─── Letter Header ─── */}
+                                <div style={{
+                                    textAlign: 'center',
+                                    marginBottom: '50px',
+                                    animation: stage === 'content' ? 'fadeInDown 0.8s ease-out 0.5s backwards' : 'none'
+                                }}>
+                                    <Heart style={{
+                                        width: 'clamp(35px, 8vw, 50px)',
+                                        height: 'clamp(35px, 8vw, 50px)',
+                                        fill: '#ffb7c5',
+                                        stroke: 'none',
+                                        marginBottom: '20px',
+                                        filter: 'drop-shadow(0 0 10px rgba(255, 183, 197, 0.5))'
+                                    }} />
+                                    
+                                    <h2 style={{
+                                        fontSize: 'clamp(1.8rem, 5vw, 3.5rem)',
+                                        fontWeight: 400,
+                                        color: '#ffe4ec',
+                                        fontStyle: 'italic',
+                                        letterSpacing: '1px',
+                                        marginBottom: '10px',
+                                        textShadow: '0 0 20px rgba(255, 183, 197, 0.3)'
+                                    }}>
+                                        My Dearest {letterConfig.herName}
+                                    </h2>
+
+                                    <div style={{
+                                        fontSize: '1.2rem',
+                                        opacity: 0.4,
+                                        letterSpacing: '8px'
+                                    }}>
+                                        ✦ 🌸 ✦
+                                    </div>
+                                </div>
+
+                                {/* ─── Letter Body ─── */}
+                                <div style={{
+                                    fontSize: 'clamp(1.1rem, 2.2vw, 1.4rem)',
+                                    lineHeight: '2',
+                                    color: '#d4c5e0',
+                                    fontWeight: 300,
+                                    letterSpacing: '0.3px'
+                                }}>
+                                    {/* Paragraphs */}
+                                    {letterConfig.paragraphs.map((paragraph, index) => (
+                                        <p key={index} style={{
+                                            marginBottom: '30px',
+                                            animation: stage === 'content' ? `fadeInUp 0.8s ease-out ${0.7 + index * 0.2}s backwards` : 'none'
+                                        }}>
+                                            {paragraph}
+                                        </p>
+                                    ))}
+                                    
+                                    {/* ═══ POLAROID PHOTO GALLERY ═══ */}
+                                    {letterConfig.images.length > 0 && (
+                                        <div
+                                            className="photo-gallery"
+                                            style={{
+                                                animation: stage === 'content' ? `fadeInUp 0.8s ease-out ${0.7 + letterConfig.paragraphs.length * 0.2}s backwards` : 'none'
+                                            }}
+                                        >
+                                            {letterConfig.images.map((imageUrl, index) => (
+                                                <div key={index} className="photo-card">
+                                                    <div className="photo-tape"></div>
+                                                    <img 
+                                                        src={imageUrl} 
+                                                        alt={`Memory ${index + 1}`}
+                                                    />
+                                                    <span className="photo-caption">
+                                                        {photoCaptions[index % photoCaptions.length]}
+                                                    </span>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                    
+                                    {/* ─── Signature ─── */}
+                                    <p style={{
+                                        marginTop: '50px',
+                                        fontSize: '1.6rem',
+                                        fontStyle: 'italic',
+                                        color: '#ffb7c5',
+                                        textAlign: 'center',
+                                        textShadow: '0 0 15px rgba(255, 183, 197, 0.3)',
+                                        animation: stage === 'content' ? `fadeInUp 0.8s ease-out ${0.9 + letterConfig.paragraphs.length * 0.2 + (letterConfig.images.length > 0 ? 0.2 : 0)}s backwards` : 'none'
+                                    }}>
+                                        Forever yours,
+                                    </p>
+                                    
+                                    <p style={{
+                                        fontSize: '2rem',
+                                        fontStyle: 'italic',
+                                        fontWeight: 600,
+                                        color: '#ffe4ec',
+                                        textAlign: 'center',
+                                        marginTop: '10px',
+                                        textShadow: '0 0 20px rgba(255, 228, 236, 0.2)',
+                                        animation: stage === 'content' ? `fadeInUp 0.8s ease-out ${1.1 + letterConfig.paragraphs.length * 0.2 + (letterConfig.images.length > 0 ? 0.2 : 0)}s backwards` : 'none'
+                                    }}>
+                                        {letterConfig.yourName}
+                                    </p>
+
+                                    {/* Closing blossom separator */}
+                                    <div style={{
+                                        textAlign: 'center',
+                                        marginTop: '30px',
+                                        fontSize: '1.2rem',
+                                        opacity: 0.4,
+                                        letterSpacing: '12px',
+                                        animation: stage === 'content' ? `fadeInUp 0.8s ease-out ${1.3 + letterConfig.paragraphs.length * 0.2 + (letterConfig.images.length > 0 ? 0.2 : 0)}s backwards` : 'none'
+                                    }}>
+                                        ✦ 🌸 ✦ 🌸 ✦
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ) : null}
+                </div>
+            );
+        }
+
+        // ─── Render ───
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<ValentineLoveLetter />);
+    </script>
+
+</body>
+</html>
